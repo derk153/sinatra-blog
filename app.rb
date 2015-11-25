@@ -14,13 +14,14 @@ end
 
 class Blog < Sinatra::Application
   helpers do
-    def get_posts
+    def get_posts(category=nil)
       posts = Dir.glob("posts/*.md").map do |post|
         post = post[/posts\/(.*?).md$/,1]
         Post.new(post)
       end
-      # posts.reject! {|post| post.date > Date.today }
       posts.sort_by(&:date).reverse
+
+      posts.select{ |p| p.category == category } unless category.nil?
     end
   end
 
@@ -30,20 +31,28 @@ class Blog < Sinatra::Application
 
   get '/blog' do
     @posts = get_posts
-    # count = 10
-    # @title = "Blog Archive"
-    # @page = params[:page].to_i || 0
-    # @max_page = latest_posts.count/count
-    # @posts = latest_posts[(@page * count)..((@page * count) + count)]
 
-    haml :blog
+    unless @posts.nil?
+      haml :blog
+    else
+      halt 404
+    end
   end
 
   get '/blog/:id' do
     @post = Post.new(params[:id])
     unless @post.title.nil?
-      p @post
       haml :post
+    else
+      halt 404
+    end
+  end
+
+  get '/category/:name' do
+    @posts = get_posts(params[:name])
+
+    unless @posts.nil?
+      haml :blog
     else
       halt 404
     end

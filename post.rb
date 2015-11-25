@@ -2,6 +2,7 @@ class Post
   attr_reader :date
   attr_reader :name
   attr_reader :title
+  attr_reader :category
 
   def initialize(name)
       @name = name
@@ -21,11 +22,7 @@ class Post
 
         @title = meta_data["title"]
         @date = meta_data["date"]
+        @category = meta_data["category"]
       end
-
-      # for older posts
-      date_str = name.match(/^\d{4}-\d{2}-\d{2}/).to_s
-      @date ||= Date.parse(date_str)
-      @slug = name[/#{date_str}-?(.*)$/,1]
     end
 end
