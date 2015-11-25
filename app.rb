@@ -29,7 +29,7 @@ class Blog < Sinatra::Application
   end
 
   get '/blog' do
-    get_posts
+    @posts = get_posts
     # count = 10
     # @title = "Blog Archive"
     # @page = params[:page].to_i || 0
@@ -38,4 +38,16 @@ class Blog < Sinatra::Application
 
     haml :blog
   end
+
+  get '/blog/:id' do
+    @post = Post.new(params[:id])
+    unless @post.title.nil?
+      p @post
+      haml :post
+    else
+      halt 404
+    end
+  end
+
+  not_found { haml :'404' }
 end

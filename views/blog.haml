@@ -1,1 +1,10 @@
 %h2 This is post
+%article.archive
+  %h1
+    Post Archive
+  - @posts.each do |post|
+    .panel.panel-default
+      .panel-heading
+        %a{:href => "/blog/#{post.name}", :title => post.title, :alt => post.title, :class => "panel-title"}= post.title
+        .date
+          %time.label.label-info= post.date

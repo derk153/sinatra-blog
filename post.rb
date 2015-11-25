@@ -1,5 +1,7 @@
 class Post
   attr_reader :date
+  attr_reader :name
+  attr_reader :title
 
   def initialize(name)
       @name = name
