@@ -13,6 +13,6 @@ end
 
 class Blog < Sinatra::Application
   get '/' do
-    "Hello, World!"
+    haml :index
   end
 end
